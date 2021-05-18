@@ -9,12 +9,16 @@ namespace SpendMonitor.Repositories
 {
     public class ExpenditureRepository : IExpenditureRepository
     {
+        private readonly SpendMonitorContext _context;
 
+        public ExpenditureRepository(SpendMonitorContext context)
+        {
+            _context = context;
+        }
         public List<Expenditure> GetAllExpenditures()
         {
-            SpendMonitorContext _expendituresContext = new SpendMonitorContext();
-            List<Expenditure> expenditures = _expendituresContext.TblExpenditures.ToList();
-            return expenditures;
+
+            return _context.TblExpenditures.ToList();
         }
 
     }
