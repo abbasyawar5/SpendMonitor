@@ -1,9 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SpendMonitor.Models;
+using SpendMonitor.Repositories;
+using SpendMonitor.Repositories.Interfaces;
+using SpendMonitor.Services;
+using SpendMonitor.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +29,14 @@ namespace SpendMonitor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddScoped<IExpenditureRepository, ExpenditureRepository>();
+            services.AddScoped<IExpenditureService, ExpenditureService>();
             services.AddControllersWithViews();
+            services.AddMvc();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +63,7 @@ namespace SpendMonitor
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Expenditures}/{action=Index}/{id?}");
             });
         }
     }
