@@ -15,7 +15,7 @@ namespace SpendMonitor.Services
             _expRepo = expRepo;
         }
 
-        public List<Expenditure> GetAllExpenditures() => _expRepo.GetAllExpenditures();
+        public List<TblExpenditure> GetAllExpenditures(string sortOrder) => _expRepo.GetAllExpenditures(sortOrder);
     }
 
 

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SpendMonitor.Repositories.Interfaces
 {
-    public interface IExpenditureRepository
+    public interface ICategoryRepository
     {
-        List<TblExpenditure> GetAllExpenditures(string sortOrder);
+        List<TblCategory> GetAllCategories();
     }
 }

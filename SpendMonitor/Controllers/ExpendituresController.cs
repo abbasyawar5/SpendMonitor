@@ -2,10 +2,8 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SpendMonitor.Repositories;
-using SpendMonitor.Repositories.Interfaces;
-using SpendMonitor.Services;
 using SpendMonitor.Services.Interfaces;
+using X.PagedList;
 
 namespace SpendMonitor.Controllers
 {
@@ -18,10 +16,16 @@ namespace SpendMonitor.Controllers
             _expenditureService = expenditureService;
         }
 
-        public IActionResult Index()
+        //public IActionResult Index(int? page)
+        public ViewResult Index(string sortOrder, int? page)
         {
-            var expenditures = _expenditureService.GetAllExpenditures();
-            return View(expenditures);
+            var expenditures = _expenditureService.GetAllExpenditures(sortOrder);
+
+            ViewBag.DateSortParm = sortOrder;
+
+            int pageSize = 30;
+            int pageNumber = page ?? 1;
+            return View(expenditures.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: ExpendituresController/Details/5

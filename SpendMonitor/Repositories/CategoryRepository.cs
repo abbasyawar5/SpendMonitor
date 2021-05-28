@@ -7,19 +7,17 @@ using System.Threading.Tasks;
 
 namespace SpendMonitor.Repositories
 {
-    public class ExpenditureRepository : IExpenditureRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly SpendMonitorContext _context;
 
-        public ExpenditureRepository(SpendMonitorContext context)
+        public CategoryRepository(SpendMonitorContext context)
         {
             _context = context;
         }
-        public List<TblExpenditure> GetAllExpenditures(string sortOrder)
+        public List<TblCategory> GetAllCategories()
         {
-
-            return _context.TblExpenditures.OrderByDescending(s => s.ExpDate).ToList();
+            return _context.TblCategories.ToList();
         }
-
     }
 }

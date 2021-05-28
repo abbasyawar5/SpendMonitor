@@ -1,11 +1,11 @@
-﻿@model IEnumerable<SpendMonitor.Models.Expenditure>
+﻿@model IEnumerable<SpendMonitor.Models.TblExpenditure>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>My Expenditures</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -14,41 +14,49 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ExpDate)
+                @Html.ActionLink("Expenditure Date", "Index", new { sortOrder = ViewBag.DateSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ExpAmount)
+                Amount
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ExpCategory)
+                Category
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ExpShop)
+                Shop Name
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpCategory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpShop)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Expid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Expid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Expid">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpCategoryNavigation.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExpShop)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Expid">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Expid">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Expid">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@*<br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+            new { page, currentFilter = ViewBag.CurrentFilter }))*@
+
