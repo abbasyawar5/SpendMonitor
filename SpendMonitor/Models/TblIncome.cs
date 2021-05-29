@@ -11,7 +11,7 @@ namespace SpendMonitor.Models
         public decimal IncomeAmount { get; set; }
         public int IncomeCategory { get; set; }
         public DateTime IncomeDate { get; set; }
-        public string ExpSource { get; set; }
+        public string IncomeSource { get; set; }
 
         public virtual TblCategory IncomeCategoryNavigation { get; set; }
     }

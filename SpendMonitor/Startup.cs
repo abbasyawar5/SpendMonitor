@@ -33,6 +33,10 @@ namespace SpendMonitor
       options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IExpenditureRepository, ExpenditureRepository>();
             services.AddScoped<IExpenditureService, ExpenditureService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IIncomeRepository, IncomeRepository>();
+            services.AddScoped<IIncomeService, IncomeService>();
             services.AddControllersWithViews();
             services.AddMvc();
 
