@@ -1,4 +1,5 @@
-﻿using SpendMonitor.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SpendMonitor.Models;
 using SpendMonitor.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace SpendMonitor.Repositories
         public List<TblExpenditure> GetAllExpenditures(string sortOrder)
         {
 
-            return _context.TblExpenditures.OrderByDescending(s => s.ExpDate).ToList();
+            return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).OrderByDescending(s => s.ExpDate).ToList();
+
         }
 
     }
