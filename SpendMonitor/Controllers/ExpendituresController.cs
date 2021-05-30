@@ -14,18 +14,18 @@ namespace SpendMonitor.Controllers
     public class ExpendituresController : Controller
     {
         private readonly SpendMonitorContext _context;
-        private readonly IExpenditureService _expenditureService;
+        private readonly IExpenditureService _expService;
 
-        public ExpendituresController(IExpenditureService expenditureService, SpendMonitorContext context)
+        public ExpendituresController(IExpenditureService expService, SpendMonitorContext context)
         {
-            _expenditureService = expenditureService;
+            _expService = expService;
             _context = context;
         }
 
         public IActionResult Index(string sortOrder)
         {
 
-            return View(_expenditureService.GetAllExpenditures(sortOrder).ToList());
+            return View(_expService.GetAllExpenditures(sortOrder).ToList());
         }
 
         public IActionResult Create()
@@ -38,17 +38,16 @@ namespace SpendMonitor.Controllers
     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Expid,ExpAmount,ExpCategory,ExpAccount,ExpDate,ExpShop")] TblExpenditure tblExpenditure)
+        public IActionResult Create([Bind("ExpAmount,ExpCategory,ExpAccount,ExpDate,ExpShop")] TblExpenditure expense)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tblExpenditure);
-                await _context.SaveChangesAsync();
+                _expService.AddExpense(expense);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ExpCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", tblExpenditure.ExpCategory);
-            ViewData["ExpAccount"] = new SelectList(_context.TblAccounts, "AccountId", "AccountBankName", tblExpenditure.ExpAccount);
-            return View(tblExpenditure);
+            ViewData["ExpCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", expense.ExpCategory);
+            ViewData["ExpAccount"] = new SelectList(_context.TblAccounts, "AccountId", "AccountBankName", expense.ExpAccount);
+            return View(expense);
         }
 
         // GET: Expenditures/Edit/5
@@ -74,36 +73,18 @@ namespace SpendMonitor.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Expid,ExpAmount,ExpCategory,ExpAccount,ExpDate,ExpShop")] TblExpenditure tblExpenditure)
+        public IActionResult Edit(int id, [Bind("Expid,ExpAmount,ExpCategory,ExpAccount,ExpDate,ExpShop")] TblExpenditure expense)
         {
-            if (id != tblExpenditure.Expid)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(tblExpenditure);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TblExpenditureExists(tblExpenditure.Expid))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                _expService.UpdateExpense(expense);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ExpCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", tblExpenditure.ExpCategory);
-            ViewData["ExpAccount"] = new SelectList(_context.TblAccounts, "AccountId", "AccountBankName", tblExpenditure.ExpAccount);
-            return View(tblExpenditure);
+            ViewData["ExpCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", expense.ExpCategory);
+            ViewData["ExpAccount"] = new SelectList(_context.TblAccounts, "AccountId", "AccountBankName", expense.ExpAccount);
+            return View(expense);
         }
 
         // GET: Expenditures/Delete/5

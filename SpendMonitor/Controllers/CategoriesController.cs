@@ -60,7 +60,7 @@ namespace SpendMonitor.Controllers
 
             if (ModelState.IsValid)
             {
-                _cateService.SaveCategory(category);
+                _cateService.UpdateCategory(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);

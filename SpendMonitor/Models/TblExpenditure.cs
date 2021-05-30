@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -17,4 +18,5 @@ namespace SpendMonitor.Models
         public virtual TblAccount ExpAccountNavigation { get; set; }
         public virtual TblCategory ExpCategoryNavigation { get; set; }
     }
+
 }

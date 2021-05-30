@@ -43,7 +43,7 @@ namespace SpendMonitor.Repositories
                 return false;
             }
         }
-        public bool SaveCategory(TblCategory category)
+        public bool UpdateCategory(TblCategory category)
         {
             try
             {

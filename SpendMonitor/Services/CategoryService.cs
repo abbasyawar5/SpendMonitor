@@ -20,7 +20,7 @@ namespace SpendMonitor.Services
         public List<TblCategory> GetAllCategories() =>  _cateRepo.GetAllCategories();
         public bool RemoveCategory(int categoryId) => _cateRepo.RemoveCategory(categoryId);
         public bool AddCategory(TblCategory category) => _cateRepo.AddCategory(category);
-        public bool SaveCategory(TblCategory category) => _cateRepo.SaveCategory(category);
+        public bool UpdateCategory(TblCategory category) => _cateRepo.UpdateCategory(category);
 
         public bool RemoveCategory(int? categoryId) => _cateRepo.RemoveCategory(categoryId);
         public TblCategory FindCategoryById(int? categoryId) => _cateRepo.FindCategoryById(categoryId);
