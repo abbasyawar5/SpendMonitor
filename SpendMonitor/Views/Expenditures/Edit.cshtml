@@ -1,13 +1,12 @@
 ﻿@model SpendMonitor.Models.TblExpenditure
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Expense";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Edit Expense</h1>
 
-<h4>TblExpenditure</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,22 +14,27 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Expid" />
             <div class="form-group">
-                <label asp-for="ExpAmount" class="control-label"></label>
+                <label class="control-label">Amount</label>
                 <input asp-for="ExpAmount" class="form-control" />
                 <span asp-validation-for="ExpAmount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ExpCategory" class="control-label"></label>
+                <label class="control-label">Category</label>
                 <select asp-for="ExpCategory" class="form-control" asp-items="ViewBag.ExpCategory"></select>
                 <span asp-validation-for="ExpCategory" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ExpDate" class="control-label"></label>
+                <label class="control-label">Account</label>
+                <select asp-for="ExpAccount" class="form-control" asp-items="ViewBag.ExpAccount"></select>
+                <span asp-validation-for="ExpAccount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Date</label>
                 <input asp-for="ExpDate" class="form-control" />
                 <span asp-validation-for="ExpDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ExpShop" class="control-label"></label>
+                <label class="control-label">Shop Name</label>
                 <input asp-for="ExpShop" class="form-control" />
                 <span asp-validation-for="ExpShop" class="text-danger"></span>
             </div>

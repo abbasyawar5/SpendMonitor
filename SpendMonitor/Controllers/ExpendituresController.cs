@@ -22,45 +22,23 @@ namespace SpendMonitor.Controllers
             _context = context;
         }
 
-        // GET: Expenditures
-        public async Task<IActionResult> Index(string sortOrder)
+        public IActionResult Index(string sortOrder)
         {
 
-            return View(await _expenditureService.GetAllExpenditures(sortOrder).ToListAsync());
+            return View(_expenditureService.GetAllExpenditures(sortOrder).ToList());
         }
 
-        // GET: Expenditures/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tblExpenditure = await _context.TblExpenditures
-                .Include(t => t.ExpCategoryNavigation)
-                .FirstOrDefaultAsync(m => m.Expid == id);
-            if (tblExpenditure == null)
-            {
-                return NotFound();
-            }
-
-            return View(tblExpenditure);
-        }
-
-        // GET: Expenditures/Create
         public IActionResult Create()
         {
             ViewData["ExpCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName");
+            ViewData["ExpAccount"] = new SelectList(_context.TblAccounts, "AccountId", "AccountBankName");
             return View();
         }
 
-        // POST: Expenditures/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Expid,ExpAmount,ExpCategory,ExpDate,ExpShop")] TblExpenditure tblExpenditure)
+        public async Task<IActionResult> Create([Bind("Expid,ExpAmount,ExpCategory,ExpAccount,ExpDate,ExpShop")] TblExpenditure tblExpenditure)
         {
             if (ModelState.IsValid)
             {
@@ -69,6 +47,7 @@ namespace SpendMonitor.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ExpCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", tblExpenditure.ExpCategory);
+            ViewData["ExpAccount"] = new SelectList(_context.TblAccounts, "AccountId", "AccountBankName", tblExpenditure.ExpAccount);
             return View(tblExpenditure);
         }
 
@@ -86,6 +65,7 @@ namespace SpendMonitor.Controllers
                 return NotFound();
             }
             ViewData["ExpCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", tblExpenditure.ExpCategory);
+            ViewData["ExpAccount"] = new SelectList(_context.TblAccounts, "AccountId", "AccountBankName", tblExpenditure.ExpAccount);
             return View(tblExpenditure);
         }
 
@@ -94,7 +74,7 @@ namespace SpendMonitor.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Expid,ExpAmount,ExpCategory,ExpDate,ExpShop")] TblExpenditure tblExpenditure)
+        public async Task<IActionResult> Edit(int id, [Bind("Expid,ExpAmount,ExpCategory,ExpAccount,ExpDate,ExpShop")] TblExpenditure tblExpenditure)
         {
             if (id != tblExpenditure.Expid)
             {
@@ -122,6 +102,7 @@ namespace SpendMonitor.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ExpCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", tblExpenditure.ExpCategory);
+            ViewData["ExpAccount"] = new SelectList(_context.TblAccounts, "AccountId", "AccountBankName", tblExpenditure.ExpAccount);
             return View(tblExpenditure);
         }
 
@@ -135,6 +116,7 @@ namespace SpendMonitor.Controllers
 
             var tblExpenditure = await _context.TblExpenditures
                 .Include(t => t.ExpCategoryNavigation)
+                .Include(t => t.ExpAccountNavigation)
                 .FirstOrDefaultAsync(m => m.Expid == id);
             if (tblExpenditure == null)
             {

@@ -23,6 +23,9 @@
                 Category
             </th>
             <th>
+                Account
+            </th>
+            <th>
                 Shop Name
             </th>
             <th></th>
@@ -31,25 +34,27 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExpDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExpAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExpCategoryNavigation.CategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExpShop)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Expid">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Expid">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Expid">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpCategoryNavigation.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpAccountNavigation.AccountBankName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpShop)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Expid">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Expid">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

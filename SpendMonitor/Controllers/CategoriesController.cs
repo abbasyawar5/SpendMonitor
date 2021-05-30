@@ -6,153 +6,80 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SpendMonitor.Models;
+using SpendMonitor.Services.Interfaces;
+using X.PagedList;
 
 namespace SpendMonitor.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly SpendMonitorContext _context;
+            private readonly ICategoryService _cateService;
 
-        public CategoriesController(SpendMonitorContext context)
+        public CategoriesController(SpendMonitorContext context, ICategoryService cateService)
         {
             _context = context;
+            _cateService = cateService;
         }
 
-        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TblCategories.ToListAsync());
+            return View(await _cateService.GetAllCategories().ToListAsync());
         }
 
-        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tblCategory = await _context.TblCategories
-                .FirstOrDefaultAsync(m => m.CategoryId == id);
-            if (tblCategory == null)
-            {
-                return NotFound();
-            }
-
-            return View(tblCategory);
-        }
-
-        // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,CategoryName,CategoryDescription")] TblCategory tblCategory)
+        public IActionResult Create([Bind("CategoryName,CategoryDescription,CategoryIsExpenditure")] TblCategory category)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Add(tblCategory);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception Ex) {
-                    return RedirectToAction(nameof(Index));
-                }
-            }
-            return View(tblCategory);
-        }
-
-        // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tblCategory = await _context.TblCategories.FindAsync(id);
-            if (tblCategory == null)
-            {
-                return NotFound();
-            }
-            return View(tblCategory);
-        }
-
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CategoryName,CategoryDescription")] TblCategory tblCategory)
-        {
-            if (id != tblCategory.CategoryId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(tblCategory);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TblCategoryExists(tblCategory.CategoryId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _cateService.AddCategory(category);
                 return RedirectToAction(nameof(Index));
             }
-            return View(tblCategory);
+            return View(category);
         }
 
-        // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var tblCategory = await _context.TblCategories
-                .FirstOrDefaultAsync(m => m.CategoryId == id);
-            if (tblCategory == null)
+            var categoryFound = _cateService.FindCategoryById(id);
+            return View(categoryFound);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind("CategoryId,CategoryName,CategoryDescription,CategoryIsExpenditure")] TblCategory category)
+        {
+
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                _cateService.SaveCategory(category);
+                return RedirectToAction(nameof(Index));
             }
-
+            return View(category);
+        }
+        public IActionResult Delete(int? id)
+        {
+            var tblCategory = _cateService.GetCategory(id);
             return View(tblCategory);
         }
 
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public  IActionResult DeleteConfirmed(int id)
         {
-            var tblCategory = await _context.TblCategories.FindAsync(id);
-            _context.TblCategories.Remove(tblCategory);
-            await _context.SaveChangesAsync();
+            _cateService.RemoveCategory(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TblCategoryExists(int id)
-        {
-            return _context.TblCategories.Any(e => e.CategoryId == id);
-        }
+       
     }
 }
