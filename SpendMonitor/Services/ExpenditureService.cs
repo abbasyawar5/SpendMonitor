@@ -9,13 +9,11 @@ namespace SpendMonitor.Services
     public class ExpenditureService : IExpenditureService
     {
         private readonly IExpenditureRepository _expRepo;
-
         public ExpenditureService(IExpenditureRepository expRepo)
         {
             _expRepo = expRepo;
         }
-
-        public List<TblExpenditure> GetAllExpenditures(string sortOrder) => _expRepo.GetAllExpenditures(sortOrder);
+        public List<TblExpenditure> GetAllExpenditures() => _expRepo.GetAllExpenditures();
         public List<TblCategory> GetAllCategories() => _expRepo.GetAllCategories();
         public List<TblAccount> GetAllAccounts() => _expRepo.GetAllAccounts();
         public bool AddExpense(TblExpenditure expense) => _expRepo.AddExpense(expense);
@@ -24,7 +22,15 @@ namespace SpendMonitor.Services
         public bool RemoveExpense(TblExpenditure expense) => _expRepo.RemoveExpense(expense);
         public TblExpenditure FindExpenseToDelete(int? id) => _expRepo.FindExpenseToDelete(id);
         public TblExpenditure FindExopenseById(int? id) => _expRepo.FindExopenseById(id);
-   }
+
+        // Calculations
+        public List<TblExpenditure> GetExpenseByCategory(int? categoryId) => _expRepo.GetExpenseByCategory(categoryId);
+        public List<TblExpenditure> GetExopenseForLastMonth() => _expRepo.GetExopenseForLastMonth();
+        public List<TblExpenditure> GetExopenseForLast3Months() => _expRepo.GetExopenseForLast3Months();
+        public List<TblExpenditure> GetExopenseForLast6Months() => _expRepo.GetExopenseForLast6Months();
+
+        
+    }
 
 
 }

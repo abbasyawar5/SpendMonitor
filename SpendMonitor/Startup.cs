@@ -37,6 +37,7 @@ namespace SpendMonitor
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IIncomeRepository, IncomeRepository>();
             services.AddScoped<IIncomeService, IncomeService>();
+            services.AddScoped<IFinancialStatsService, FinancialStatsService>();
             services.AddControllersWithViews();
             services.AddMvc();
 

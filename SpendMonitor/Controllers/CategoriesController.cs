@@ -13,18 +13,17 @@ namespace SpendMonitor.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly SpendMonitorContext _context;
+
             private readonly ICategoryService _cateService;
 
         public CategoriesController(SpendMonitorContext context, ICategoryService cateService)
         {
-            _context = context;
             _cateService = cateService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _cateService.GetAllCategories().ToListAsync());
+            return View(_cateService.GetAllCategories().ToList());
         }
 
         public IActionResult Create()
@@ -71,7 +70,6 @@ namespace SpendMonitor.Controllers
             return View(tblCategory);
         }
 
-        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public  IActionResult DeleteConfirmed(int id)

@@ -11,12 +11,11 @@ namespace SpendMonitor.Repositories
     public class ExpenditureRepository : IExpenditureRepository
     {
         private readonly SpendMonitorContext _context;
-
         public ExpenditureRepository(SpendMonitorContext context)
         {
             _context = context;
         }
-        public List<TblExpenditure> GetAllExpenditures(string sortOrder)
+        public List<TblExpenditure> GetAllExpenditures()
         {
             return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).Include(t => t.ExpAccountNavigation).OrderByDescending(s => s.ExpDate).ToList();
         }
@@ -24,7 +23,6 @@ namespace SpendMonitor.Repositories
         {
             return _context.TblCategories.ToList();
         }
-
         public List<TblAccount> GetAllAccounts()
         {
             return _context.TblAccounts.ToList();
@@ -75,7 +73,6 @@ namespace SpendMonitor.Repositories
             }
 
         }
-
         public TblExpenditure FindExpenseToDelete(int? id)
         {
             var expense = _context.TblExpenditures
@@ -89,6 +86,31 @@ namespace SpendMonitor.Repositories
         {
             var expense = _context.TblExpenditures.Find(id);
             return expense;
+        }
+
+        public List<TblExpenditure> GetExpenseByCategory(int? categoryId) {
+            return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).Include(t => t.ExpAccountNavigation).Where(t => t.ExpCategory == categoryId).ToList();
+        } 
+        public List<TblExpenditure> GetExopenseForLastMonth()
+        {
+            var expenseList = _context.TblExpenditures.Where(x =>
+    DateTime.Compare(x.ExpDate, DateTime.Today.AddMonths(-1)) >= 0).ToList();
+
+            return expenseList;
+        }
+        public List<TblExpenditure> GetExopenseForLast3Months()
+        {
+            var expenseList = _context.TblExpenditures.Where(x =>
+    DateTime.Compare(x.ExpDate, DateTime.Today.AddMonths(-3)) >= 0).ToList();
+
+            return expenseList;
+        }
+        public List<TblExpenditure> GetExopenseForLast6Months()
+        {
+            var expenseList = _context.TblExpenditures.Where(x =>
+    DateTime.Compare(x.ExpDate, DateTime.Today.AddMonths(-6)) >= 0).ToList();
+
+            return expenseList;
         }
     }
 }

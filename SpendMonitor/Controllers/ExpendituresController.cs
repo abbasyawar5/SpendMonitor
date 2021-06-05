@@ -18,12 +18,12 @@ namespace SpendMonitor.Controllers
         {
             _expService = expService;
         }
-        public IActionResult Index(string sortOrder)
+        public IActionResult Index()
         {
 
-            return View(_expService.GetAllExpenditures(sortOrder).ToList());
+            return View(_expService.GetAllExpenditures().ToList());
         }
-        public IActionResult Create(string sortOrder)
+        public IActionResult Create()
         {
             ViewData["ExpCategory"] = new SelectList(_expService.GetAllCategories(), "CategoryId", "CategoryName");
             ViewData["ExpAccount"] = new SelectList(_expService.GetAllAccounts(), "AccountId", "AccountBankName");

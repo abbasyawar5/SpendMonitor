@@ -22,7 +22,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Expenditures" asp-action="Index">Expenditures</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Incomes" asp-action="Index">Incoems</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Incomes" asp-action="Index">Incomes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
@@ -35,6 +35,13 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @await Component.InvokeAsync("FinancialStats")
             @RenderBody()
         </main>
     </div>

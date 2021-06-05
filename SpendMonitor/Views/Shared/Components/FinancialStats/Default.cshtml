@@ -1,0 +1,29 @@
+﻿@model SpendMonitor.Models.FinancialStatsModel
+
+<ul>
+    <li class="d-inline-block">
+        <strong>@Html.DisplayNameFor(x => x.AverageMonthlyExpense)</strong>
+        @Html.DisplayFor(x => x.AverageMonthlyExpense)
+    </li>
+    <li class="d-inline-block">
+        <strong>@Html.DisplayNameFor(x => x.AverageMonthlyIncome)</strong>
+        @Html.DisplayFor(x => x.AverageMonthlyIncome)
+    </li>
+</ul>
+
+<div class="container">
+    <strong>@Html.DisplayNameFor(x => x.ExpenseByCategory)</strong>
+
+    @foreach (var item in Model.ExpenseByCategory)
+    {
+        <div class="row">
+            <div class="col">
+                @Html.DisplayFor(x => item.Key)
+            </div>
+            <div class="col">
+                @Html.DisplayFor(x => item.Value)
+            </div>
+
+        </div>
+    }
+</div>
