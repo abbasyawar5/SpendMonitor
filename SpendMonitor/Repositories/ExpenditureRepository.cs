@@ -20,7 +20,15 @@ namespace SpendMonitor.Repositories
         {
             return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).Include(t => t.ExpAccountNavigation).OrderByDescending(s => s.ExpDate).ToList();
         }
+        public List<TblCategory> GetAllCategories()
+        {
+            return _context.TblCategories.ToList();
+        }
 
+        public List<TblAccount> GetAllAccounts()
+        {
+            return _context.TblAccounts.ToList();
+        }
         public bool AddExpense(TblExpenditure expense)
         {
             try
@@ -34,8 +42,6 @@ namespace SpendMonitor.Repositories
                 return false;
             }
         }
-
-
         public bool UpdateExpense(TblExpenditure newExpense)
         {
             try
@@ -50,22 +56,39 @@ namespace SpendMonitor.Repositories
                 return false;
             }
         }
-
         public bool GetExpense(TblExpenditure expense)
         {
             throw new NotImplementedException();
         }
-
         public bool RemoveExpense(TblExpenditure expense)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.TblExpenditures.Remove(expense);
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                return false;
+            }
+
         }
 
+        public TblExpenditure FindExpenseToDelete(int? id)
+        {
+            var expense = _context.TblExpenditures
+                    .Include(t => t.ExpCategoryNavigation)
+                    .Include(t => t.ExpAccountNavigation)
+                    .FirstOrDefault(m => m.Expid == id);
+
+            return expense;
+        }
         public TblExpenditure FindExopenseById(int? id)
         {
             var expense = _context.TblExpenditures.Find(id);
             return expense;
         }
-
     }
 }
