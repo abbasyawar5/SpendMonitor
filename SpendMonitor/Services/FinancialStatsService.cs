@@ -27,6 +27,7 @@ namespace SpendMonitor.Services
             _finStatsModel.AverageMonthlyIncome = SetAvgMonthlyIncome();
             _finStatsModel.AverageMonthlyExpense = SetAvgMonthlyExpense();
             _finStatsModel.TotalCurrentMonthExpense = SetCurrentMonthExpense();
+            _finStatsModel.TotalCurrentMonthIncome = SetCurrentMonthIncome();
             _finStatsModel.ExpenseByCategory = SetExpenseByCategory();
 
             return _finStatsModel;
@@ -62,6 +63,14 @@ namespace SpendMonitor.Services
             var expenses = _expRepo.GetAllExpensesForXMonth(currentMonth);
             var totalExpenses = expenses.Sum(x => x.ExpAmount);
             return totalExpenses;
+        }
+
+        public decimal SetCurrentMonthIncome()
+        {
+            var currentMonth = DateTime.Now.Month;
+            var expenses = _incRepo.GetAllIncomesForXMonth(currentMonth);
+            var totalIncomes = expenses.Sum(x => x.IncomeAmount);
+            return totalIncomes;
         }
         public Dictionary<String, decimal> SetExpenseByCategory()
         {

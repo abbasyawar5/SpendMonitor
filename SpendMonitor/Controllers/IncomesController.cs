@@ -28,43 +28,23 @@ namespace SpendMonitor.Controllers
             
         }
 
-        // GET: Incomes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tblIncome = await _context.TblIncomes
-                .Include(t => t.IncomeCategoryNavigation)
-                .FirstOrDefaultAsync(m => m.IncomeId == id);
-            if (tblIncome == null)
-            {
-                return NotFound();
-            }
-
-            return View(tblIncome);
-        }
-
         public IActionResult Create()
         {
-            ViewData["IncomeCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName");
+            ViewData["IncomeCategory"] = new SelectList(_incService.GetAllCategories(), "CategoryId", "CategoryName");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IncomeAmount,IncomeCategory,IncomeDate,ExpSource")]  TblIncome tblIncome)
+        public IActionResult Create([Bind("IncomeAmount,IncomeCategory,IncomeDate,IncomeSource")]  TblIncome income)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tblIncome);
-                await _context.SaveChangesAsync();
+                _incService.AddIncome(income);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IncomeCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", tblIncome.IncomeCategory);
-            return View(tblIncome);
+            ViewData["IncomeCategory"] = new SelectList(_incService.GetAllCategories(), "CategoryId", "CategoryName", income.IncomeCategory);
+            return View(income);
         }
         public async Task<IActionResult> Edit(int? id)
         {

@@ -14,16 +14,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IncomeAmount)
+                Income Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IncomeDate)
+                Income Amount
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IncomeSource)
+                Income Source
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IncomeCategoryNavigation)
+                Income Category
             </th>
             <th></th>
         </tr>
@@ -32,11 +32,12 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IncomeAmount)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.IncomeDate)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IncomeAmount)
+            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.IncomeSource)
             </td>
