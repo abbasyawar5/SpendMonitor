@@ -69,7 +69,7 @@ namespace SpendMonitor
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Expenditures}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -9,6 +9,7 @@ namespace SpendMonitor.Repositories.Interfaces
     public interface IExpenditureRepository
     {
         List<TblExpenditure> GetAllExpenditures();
+        List<TblExpenditure> GetAllExpensesForXMonth(int month);
         List<TblCategory> GetAllCategories();
         List<TblAccount> GetAllAccounts();
         bool AddExpense(TblExpenditure expense);

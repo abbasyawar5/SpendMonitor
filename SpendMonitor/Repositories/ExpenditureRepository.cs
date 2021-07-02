@@ -19,6 +19,10 @@ namespace SpendMonitor.Repositories
         {
             return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).Include(t => t.ExpAccountNavigation).OrderByDescending(s => s.ExpDate).ToList();
         }
+        public List<TblExpenditure> GetAllExpensesForXMonth(int month)
+        {
+            return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).Include(t => t.ExpAccountNavigation).Where( t => t.ExpDate.Month == month).OrderByDescending(s => s.ExpDate).ToList();
+        }
         public List<TblCategory> GetAllCategories()
         {
             return _context.TblCategories.ToList();

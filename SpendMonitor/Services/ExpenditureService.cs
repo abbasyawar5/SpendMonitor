@@ -13,6 +13,8 @@ namespace SpendMonitor.Services
         {
             _expRepo = expRepo;
         }
+
+        public List<TblExpenditure> GetAllExpensesForXMonth(int month) => _expRepo.GetAllExpensesForXMonth(month);
         public List<TblExpenditure> GetAllExpenditures() => _expRepo.GetAllExpenditures();
         public List<TblCategory> GetAllCategories() => _expRepo.GetAllCategories();
         public List<TblAccount> GetAllAccounts() => _expRepo.GetAllAccounts();
@@ -29,7 +31,7 @@ namespace SpendMonitor.Services
         public List<TblExpenditure> GetExopenseForLast3Months() => _expRepo.GetExopenseForLast3Months();
         public List<TblExpenditure> GetExopenseForLast6Months() => _expRepo.GetExopenseForLast6Months();
 
-        
+
     }
 
 

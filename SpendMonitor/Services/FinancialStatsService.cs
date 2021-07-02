@@ -13,57 +13,67 @@ namespace SpendMonitor.Services
         private readonly IExpenditureRepository _expRepo;
         private readonly ICategoryRepository _catRepo;
         private readonly IIncomeRepository _incRepo;
+        public FinancialStatsModel _finStatsModel;
 
-        public FinancialStatsService(IExpenditureRepository expRepo, ICategoryRepository catRepo, IIncomeRepository incRepo) {
+        public FinancialStatsService(IExpenditureRepository expRepo, ICategoryRepository catRepo, IIncomeRepository incRepo)
+        {
             _expRepo = expRepo;
             _catRepo = catRepo;
             _incRepo = incRepo;
         }
         public FinancialStatsModel GetStats()
         {
-            FinancialStatsModel stats = new FinancialStatsModel();
+            _finStatsModel = new FinancialStatsModel();
+            _finStatsModel.AverageMonthlyIncome = SetAvgMonthlyIncome();
+            _finStatsModel.AverageMonthlyExpense = SetAvgMonthlyExpense();
+            _finStatsModel.TotalCurrentMonthExpense = SetCurrentMonthExpense();
+            _finStatsModel.ExpenseByCategory = SetExpenseByCategory();
+
+            return _finStatsModel;
+        }
+
+        public decimal SetAvgMonthlyIncome()
+        {
+
+            var incomes = _incRepo.GetAllIncomes();
+            List<string> months = (from n in incomes
+                                       //where n.Year.Equals(yearSelected)
+                                   select n.IncomeDate.ToString("MMM")).Distinct().ToList();
+            var totalIncomes = incomes.Sum(x => x.IncomeAmount);
+            var AverageMonthlyIncome = totalIncomes / months.Count();
+            return AverageMonthlyIncome;
+        }
+
+        public decimal SetAvgMonthlyExpense()
+        {
+
             var expenses = _expRepo.GetAllExpenditures();
-            stats.AverageMonthlyExpense = expenses.Sum(x => x.ExpAmount);
-
-
-            stats.ExpenseByCategory = GetExpenseByCategory();
-            return stats;
+            List<string> months = (from n in expenses
+                                       //where n.Year.Equals(yearSelected)
+                                   select n.ExpDate.ToString("MMM")).Distinct().ToList();
+            var totalExpenses = expenses.Sum(x => x.ExpAmount);
+            var AverageMonthlyExpense = totalExpenses / months.Count();
+            return AverageMonthlyExpense;
         }
 
-        public decimal GetTotalExpense()
+        public decimal SetCurrentMonthExpense()
         {
-            var totalExpense = _expRepo.GetAllExpenditures().Sum(x => x.ExpAmount);
-
-            return totalExpense;
+            var currentMonth = DateTime.Now.Month;
+            var expenses = _expRepo.GetAllExpensesForXMonth(currentMonth);
+            var totalExpenses = expenses.Sum(x => x.ExpAmount);
+            return totalExpenses;
         }
-
-        public decimal GetExpenseByCategory(int _catId)
-        {
-            var expense = _expRepo.GetExpenseByCategory(_catId).Sum(x => x.ExpAmount);
-
-            return expense;
-        }
-
-        public Dictionary<String,decimal> GetExpenseByCategory()
+        public Dictionary<String, decimal> SetExpenseByCategory()
         {
             var categories = _catRepo.GetAllCategories().ToList();
             Dictionary<String, decimal> expenseByCat = new Dictionary<string, decimal>();
 
-            for (int i=0; i<categories.Count; i++)
+            for (int i = 0; i < categories.Count; i++)
             {
-                expenseByCat.Add(categories[i].CategoryName, GetExpenseByCategory(categories[i].CategoryId));
-
+                expenseByCat.Add(categories[i].CategoryName, _expRepo.GetExpenseByCategory(categories[i].CategoryId).Sum(x => x.ExpAmount));
             }
-
-
             return expenseByCat;
         }
 
-        public decimal GetTotalExpenseForLastMonth()
-        {
-            var totalExpense = _expRepo.GetExopenseForLastMonth().Sum(x => x.ExpAmount);
-
-            return totalExpense;
-        }
     }
 }

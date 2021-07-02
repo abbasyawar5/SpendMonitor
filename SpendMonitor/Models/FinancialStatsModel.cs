@@ -13,6 +13,11 @@ namespace SpendMonitor.Models
         [DataType(DataType.Currency)]
         public decimal AverageMonthlyExpense { get; set; }
 
+
+        [DisplayName("Total Expense This Month: ")]
+        [DataType(DataType.Currency)]
+        public decimal TotalCurrentMonthExpense { get; set; }
+
         [DisplayName("Avg. Monthly Income: ")]
         [DataType(DataType.Currency)]
         public decimal AverageMonthlyIncome { get; set; }

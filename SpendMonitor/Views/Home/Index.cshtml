@@ -1,8 +1,25 @@
-﻿@{
+﻿@model SpendMonitor.Models.FinancialStatsModel
+
+@{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@await Component.InvokeAsync("FinancialStats")
+
+@*<div class="container">
+    <strong>@Html.DisplayNameFor(x => x.ExpenseByCategory)</strong>
+
+    @foreach (var item in Model.ExpenseByCategory)
+    {
+        <div class="row">
+            <div class="col">
+                @Html.DisplayFor(x => item.Key)
+            </div>
+            <div class="col">
+                @Html.DisplayFor(x => item.Value)
+            </div>
+
+        </div>
+    }
+</div>*@

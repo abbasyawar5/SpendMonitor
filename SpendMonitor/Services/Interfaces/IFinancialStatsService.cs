@@ -9,7 +9,5 @@ namespace SpendMonitor.Services.Interfaces
     public interface IFinancialStatsService
     {
         FinancialStatsModel GetStats();
-        decimal GetTotalExpense();
-        decimal GetTotalExpenseForLastMonth();
     }
 }

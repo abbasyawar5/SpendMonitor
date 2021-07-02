@@ -33,15 +33,10 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
     <div class="container">
         <main role="main" class="pb-3">
-            @await Component.InvokeAsync("FinancialStats")
+            @*@await Component.InvokeAsync("FinancialStats")*@
             @RenderBody()
         </main>
     </div>
