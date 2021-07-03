@@ -29,7 +29,7 @@ namespace SpendMonitor.Repositories
             return _context.TblExpenditures
                 .Include(t => t.ExpCategoryNavigation)
                 .Include(t => t.ExpAccountNavigation)
-                .Where( t => t.ExpDate.Month == month)
+                .Where(t => t.ExpDate.Month == month)
                 .OrderByDescending(s => s.ExpDate).ToList();
         }
         public List<TblCategory> GetAllCategories()
@@ -105,9 +105,16 @@ namespace SpendMonitor.Repositories
             return expense;
         }
 
-        public List<TblExpenditure> GetExpenseByCategory(int? categoryId) {
-            return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).Include(t => t.ExpAccountNavigation).Where(t => t.ExpCategory == categoryId).ToList();
-        } 
+        public List<TblExpenditure> GetExpenseByCategory(int? categoryId, int? month)
+        {
+            return _context.TblExpenditures
+                .Include(t => t.ExpCategoryNavigation)
+                .Include(t => t.ExpAccountNavigation)
+                .Where(t => t.ExpCategoryNavigation.CategoryIsExpenditure == true)
+                .Where(t => t.ExpDate.Month == month)
+                .Where(t => t.ExpCategory == categoryId)
+                .ToList();
+        }
         public List<TblExpenditure> GetExopenseForLastMonth()
         {
             var expenseList = _context.TblExpenditures.Where(x =>

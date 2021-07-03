@@ -26,7 +26,7 @@ namespace SpendMonitor.Services
         public TblExpenditure FindExopenseById(int? id) => _expRepo.FindExopenseById(id);
 
         // Calculations
-        public List<TblExpenditure> GetExpenseByCategory(int? categoryId) => _expRepo.GetExpenseByCategory(categoryId);
+        public List<TblExpenditure> GetExpenseByCategory(int? categoryId, int? month) => _expRepo.GetExpenseByCategory(categoryId, month);
         public List<TblExpenditure> GetExopenseForLastMonth() => _expRepo.GetExopenseForLastMonth();
         public List<TblExpenditure> GetExopenseForLast3Months() => _expRepo.GetExopenseForLast3Months();
         public List<TblExpenditure> GetExopenseForLast6Months() => _expRepo.GetExopenseForLast6Months();

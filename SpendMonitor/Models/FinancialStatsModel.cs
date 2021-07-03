@@ -35,6 +35,9 @@ namespace SpendMonitor.Models
         public decimal TotalLastMonthIncome{ get; set; }
 
         [DisplayName("Total Expenditure By Category: ")]
-        public Dictionary<string, decimal> ExpenseByCategory { get; set; }
+        public List<TblAccount> AccountBalances { get; set; }
+
+        [DisplayName("Total Expenditure By Month: ")]
+        public List<Dictionary<string, decimal>> ExpenseByMonth { get; set; }
     }
 }

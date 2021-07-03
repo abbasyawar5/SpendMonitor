@@ -18,7 +18,7 @@ namespace SpendMonitor.Repositories.Interfaces
         bool UpdateExpense(TblExpenditure expense);
         TblExpenditure FindExpenseToDelete(int? id);
         TblExpenditure FindExopenseById(int? id);
-        List<TblExpenditure> GetExpenseByCategory(int? categoryId);
+        List<TblExpenditure> GetExpenseByCategory(int? categoryId, int? month);
         List<TblExpenditure> GetExopenseForLastMonth();
         List<TblExpenditure> GetExopenseForLast3Months();
         List<TblExpenditure> GetExopenseForLast6Months();

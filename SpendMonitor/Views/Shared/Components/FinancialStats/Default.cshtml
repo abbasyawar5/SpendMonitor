@@ -1,53 +1,77 @@
 ﻿@model SpendMonitor.Models.FinancialStatsModel
+<div class="table">
+    <div class="row">
+        <div class="column" style="width:25%">
+            <strong>@Html.DisplayNameFor(x => x.TotalCurrentMonthExpense)</strong>
+            @Html.DisplayFor(x => x.TotalCurrentMonthExpense)
+        </div>
+        <br />
+        <div class="column" style="width: 25%">
+            <strong>@Html.DisplayNameFor(x => x.TotalLastMonthExpense)</strong>
+            @Html.DisplayFor(x => x.TotalLastMonthExpense)
+        </div>
+        <br />
+        <div class="column" style="width: 25%">
+            <strong>@Html.DisplayNameFor(x => x.AverageMonthlyExpense)</strong>
+            @Html.DisplayFor(x => x.AverageMonthlyExpense)
+        </div>
+    </div>
 
-<div class="row">
-    <div class="column" style="width:25%">
-        <strong>@Html.DisplayNameFor(x => x.TotalCurrentMonthExpense)</strong>
-        @Html.DisplayFor(x => x.TotalCurrentMonthExpense)
-    </div>
-    <br />
-    <div class="column" style="width: 25%">
-        <strong>@Html.DisplayNameFor(x => x.TotalLastMonthExpense)</strong>
-        @Html.DisplayFor(x => x.TotalLastMonthExpense)
-    </div>
-    <br />
-    <div class="column" style="width: 25%">
-        <strong>@Html.DisplayNameFor(x => x.AverageMonthlyExpense)</strong>
-        @Html.DisplayFor(x => x.AverageMonthlyExpense)
+    <div class="row">
+        <div class="column" style="width:25%">
+            <strong>@Html.DisplayNameFor(x => x.TotalCurrentMonthIncome)</strong>
+            @Html.DisplayFor(x => x.TotalCurrentMonthIncome)
+        </div>
+        <br />
+        <div class="column" style="width: 25%">
+            <strong>@Html.DisplayNameFor(x => x.TotalLastMonthIncome)</strong>
+            @Html.DisplayFor(x => x.TotalLastMonthIncome)
+        </div>
+        <br />
+        <div class="column" style="width: 25%">
+            <strong>@Html.DisplayNameFor(x => x.AverageMonthlyIncome)</strong>
+            @Html.DisplayFor(x => x.AverageMonthlyIncome)
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="column" style="width:25%">
-        <strong>@Html.DisplayNameFor(x => x.TotalCurrentMonthIncome)</strong>
-        @Html.DisplayFor(x => x.TotalCurrentMonthIncome)
-    </div>
-    <br />
-    <div class="column" style="width: 25%">
-        <strong>@Html.DisplayNameFor(x => x.TotalLastMonthIncome)</strong>
-        @Html.DisplayFor(x => x.TotalLastMonthIncome)
-    </div>
-    <br />
-    <div class="column" style="width: 25%">
-        <strong>@Html.DisplayNameFor(x => x.AverageMonthlyIncome)</strong>
-        @Html.DisplayFor(x => x.AverageMonthlyIncome)
-    </div>
-</div>
+<div class="table">
 
-
-    <div class="container">
-        <strong>@Html.DisplayNameFor(x => x.ExpenseByCategory)</strong>
-
-        @foreach (var item in Model.ExpenseByCategory)
-        {
-            <div class="row">
-                <div class="col">
-                    @Html.DisplayFor(x => item.Key)
-                </div>
-                <div class="col">
-                    @Html.DisplayFor(x => item.Value)
-                </div>
-
+    @foreach (var item in Model.AccountBalances)
+    {<div class="row">
+            <div class="column" style="width:25%">
+                <strong>@Html.DisplayFor(x => item.AccountBankName)</strong>
             </div>
-        }
+            <div class="column" style="width: 25%">
+                @Html.DisplayFor(x => item.AccountBalance)
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="table">
+    <div class="row">
+        <strong>@Html.DisplayNameFor(x => x.ExpenseByMonth)</strong>
     </div>
+
+    @foreach (var dict in Model.ExpenseByMonth)
+    {
+        <div class="table">
+            @foreach (var item in dict)
+            {
+                <div class="row">
+
+                    <div class="col">
+                        @Html.DisplayFor(x => item.Key)
+                    </div>
+                    <div class="col">
+                        @Html.DisplayFor(x => item.Value)
+                    </div>
+
+                </div>
+            }
+        </div>
+    }
+
+</div>
