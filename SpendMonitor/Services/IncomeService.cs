@@ -24,5 +24,7 @@ namespace SpendMonitor.Services
         public bool GetIncome(TblIncome income) => _incRepo.GetIncome(income);
         public bool RemoveIncome(TblIncome income) => _incRepo.RemoveIncome(income);
         public bool UpdateIncome(TblIncome income) => _incRepo.UpdateIncome(income);
+        public TblIncome FindIncomeById(int? id) => _incRepo.FindIncomeById(id);
+        public TblIncome FindIncomeToDelete(int? id) => _incRepo.FindIncomeToDelete(id);
     }
 }

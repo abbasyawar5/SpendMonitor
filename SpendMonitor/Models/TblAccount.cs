@@ -10,6 +10,7 @@ namespace SpendMonitor.Models
         public TblAccount()
         {
             TblExpenditures = new HashSet<TblExpenditure>();
+            TblIncomes = new HashSet<TblIncome>();
         }
 
         public int AccountId { get; set; }
@@ -18,5 +19,6 @@ namespace SpendMonitor.Models
         public decimal? AccountBalance { get; set; }
 
         public virtual ICollection<TblExpenditure> TblExpenditures { get; set; }
+        public virtual ICollection<TblIncome> TblIncomes { get; set; }
     }
 }

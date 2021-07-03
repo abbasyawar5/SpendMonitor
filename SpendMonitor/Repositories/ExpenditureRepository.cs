@@ -17,19 +17,32 @@ namespace SpendMonitor.Repositories
         }
         public List<TblExpenditure> GetAllExpenditures()
         {
-            return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).Include(t => t.ExpAccountNavigation).OrderByDescending(s => s.ExpDate).ToList();
+            return _context.TblExpenditures
+                .Include(t => t.ExpCategoryNavigation)
+                .Where(t => t.ExpCategoryNavigation.CategoryIsExpenditure == true)
+                .Include(t => t.ExpAccountNavigation)
+                .OrderByDescending(s => s.ExpDate)
+                .ToList();
         }
         public List<TblExpenditure> GetAllExpensesForXMonth(int month)
         {
-            return _context.TblExpenditures.Include(t => t.ExpCategoryNavigation).Include(t => t.ExpAccountNavigation).Where( t => t.ExpDate.Month == month).OrderByDescending(s => s.ExpDate).ToList();
+            return _context.TblExpenditures
+                .Include(t => t.ExpCategoryNavigation)
+                .Include(t => t.ExpAccountNavigation)
+                .Where( t => t.ExpDate.Month == month)
+                .OrderByDescending(s => s.ExpDate).ToList();
         }
         public List<TblCategory> GetAllCategories()
         {
-            return _context.TblCategories.ToList();
+            return _context.TblCategories
+                .Where(t => t.CategoryIsExpenditure == true)
+                .ToList();
         }
         public List<TblAccount> GetAllAccounts()
         {
-            return _context.TblAccounts.ToList();
+            return _context.TblAccounts
+                     .Where(t => t.AccountIsDebit == false)
+                     .ToList();
         }
         public bool AddExpense(TblExpenditure expense)
         {

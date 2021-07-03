@@ -18,6 +18,10 @@ namespace SpendMonitor.Models
         [DataType(DataType.Currency)]
         public decimal TotalCurrentMonthExpense { get; set; }
 
+        [DisplayName("Total Expense Last Month: ")]
+        [DataType(DataType.Currency)]
+        public decimal TotalLastMonthExpense { get; set; }
+
         [DisplayName("Avg. Monthly Income: ")]
         [DataType(DataType.Currency)]
         public decimal AverageMonthlyIncome { get; set; }
@@ -25,6 +29,10 @@ namespace SpendMonitor.Models
         [DisplayName("Total Income This Month:")]
         [DataType(DataType.Currency)]
         public decimal TotalCurrentMonthIncome { get; set; }
+
+        [DisplayName("Total Income Last Month: ")]
+        [DataType(DataType.Currency)]
+        public decimal TotalLastMonthIncome{ get; set; }
 
         [DisplayName("Total Expenditure By Category: ")]
         public Dictionary<string, decimal> ExpenseByCategory { get; set; }

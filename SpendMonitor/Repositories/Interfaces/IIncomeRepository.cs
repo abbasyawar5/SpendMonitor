@@ -16,5 +16,7 @@ namespace SpendMonitor.Repositories.Interfaces
         bool GetIncome(TblIncome income);
         bool RemoveIncome(TblIncome income);
         bool UpdateIncome(TblIncome income);
+        TblIncome FindIncomeById(int? id);
+        TblIncome FindIncomeToDelete(int? id);
     }
 }

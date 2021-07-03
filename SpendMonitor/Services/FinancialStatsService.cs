@@ -26,8 +26,10 @@ namespace SpendMonitor.Services
             _finStatsModel = new FinancialStatsModel();
             _finStatsModel.AverageMonthlyIncome = SetAvgMonthlyIncome();
             _finStatsModel.AverageMonthlyExpense = SetAvgMonthlyExpense();
-            _finStatsModel.TotalCurrentMonthExpense = SetCurrentMonthExpense();
-            _finStatsModel.TotalCurrentMonthIncome = SetCurrentMonthIncome();
+            _finStatsModel.TotalCurrentMonthExpense = SetXMonthExpense(DateTime.Now.Month);
+            _finStatsModel.TotalLastMonthExpense = SetXMonthExpense(DateTime.Now.Month - 1);
+            _finStatsModel.TotalCurrentMonthIncome = SetXMonthIncome(DateTime.Now.Month);
+            _finStatsModel.TotalLastMonthIncome = SetXMonthIncome(DateTime.Now.Month - 1);
             _finStatsModel.ExpenseByCategory = SetExpenseByCategory();
 
             return _finStatsModel;
@@ -57,17 +59,17 @@ namespace SpendMonitor.Services
             return AverageMonthlyExpense;
         }
 
-        public decimal SetCurrentMonthExpense()
+        public decimal SetXMonthExpense(int month)
         {
-            var currentMonth = DateTime.Now.Month;
+            var currentMonth = month;
             var expenses = _expRepo.GetAllExpensesForXMonth(currentMonth);
             var totalExpenses = expenses.Sum(x => x.ExpAmount);
             return totalExpenses;
         }
 
-        public decimal SetCurrentMonthIncome()
+        public decimal SetXMonthIncome(int month)
         {
-            var currentMonth = DateTime.Now.Month;
+            var currentMonth = month;
             var expenses = _incRepo.GetAllIncomesForXMonth(currentMonth);
             var totalIncomes = expenses.Sum(x => x.IncomeAmount);
             return totalIncomes;

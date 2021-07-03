@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>My Incomes</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -14,16 +14,19 @@
     <thead>
         <tr>
             <th>
-                Income Date
+                Date
             </th>
             <th>
-                Income Amount
+                Amount
             </th>
             <th>
-                Income Source
+                Source
             </th>
             <th>
-                Income Category
+                Category
+            </th>
+            <th>
+                Account
             </th>
             <th></th>
         </tr>
@@ -45,8 +48,10 @@
                 @Html.DisplayFor(modelItem => item.IncomeCategoryNavigation.CategoryName)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.IncomeAccountNavigation.AccountBankName)
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.IncomeId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IncomeId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.IncomeId">Delete</a>
             </td>
         </tr>

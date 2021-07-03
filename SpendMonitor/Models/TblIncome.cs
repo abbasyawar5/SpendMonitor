@@ -12,7 +12,9 @@ namespace SpendMonitor.Models
         public int IncomeCategory { get; set; }
         public DateTime IncomeDate { get; set; }
         public string IncomeSource { get; set; }
+        public int? IncomeAccount { get; set; }
 
+        public virtual TblAccount IncomeAccountNavigation { get; set; }
         public virtual TblCategory IncomeCategoryNavigation { get; set; }
     }
 }

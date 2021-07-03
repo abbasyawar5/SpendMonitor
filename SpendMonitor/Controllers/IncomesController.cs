@@ -13,30 +13,29 @@ namespace SpendMonitor.Controllers
 {
     public class IncomesController : Controller
     {
-        private readonly SpendMonitorContext _context;
         private readonly IIncomeService _incService;
         public IncomesController(SpendMonitorContext context, IIncomeService incService)
         {
-            _context = context;
             _incService = incService;
         }
 
         public IActionResult Index()
         {
-            
+
             return View(_incService.GetAllIncomes().ToList());
-            
+
         }
 
         public IActionResult Create()
         {
             ViewData["IncomeCategory"] = new SelectList(_incService.GetAllCategories(), "CategoryId", "CategoryName");
+            ViewData["IncomeAccount"] = new SelectList(_incService.GetAllAccounts(), "AccountId", "AccountBankName");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("IncomeAmount,IncomeCategory,IncomeDate,IncomeSource")]  TblIncome income)
+        public IActionResult Create([Bind("IncomeAmount,IncomeCategory,IncomeAccount,IncomeDate,IncomeSource")] TblIncome income)
         {
             if (ModelState.IsValid)
             {
@@ -44,27 +43,29 @@ namespace SpendMonitor.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IncomeCategory"] = new SelectList(_incService.GetAllCategories(), "CategoryId", "CategoryName", income.IncomeCategory);
+            ViewData["IncomeAccount"] = new SelectList(_incService.GetAllAccounts(), "AccountId", "AccountBankName");
             return View(income);
         }
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var tblIncome = await _context.TblIncomes.FindAsync(id);
+            var tblIncome = _incService.FindIncomeById(id);
             if (tblIncome == null)
             {
                 return NotFound();
             }
-            ViewData["IncomeCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", tblIncome.IncomeCategory);
+            ViewData["IncomeCategory"] = new SelectList(_incService.GetAllCategories(), "CategoryId", "CategoryName", tblIncome.IncomeCategory);
+            ViewData["IncomeAccount"] = new SelectList(_incService.GetAllAccounts(), "AccountId", "AccountBankName");
             return View(tblIncome);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IncomeId,IncomeAmount,IncomeCategory,IncomeDate,ExpSource")] TblIncome tblIncome)
+        public IActionResult Edit(int id, [Bind("IncomeId,IncomeAmount,IncomeCategory,IncomeAccount,IncomeDate,IncomeSource")] TblIncome tblIncome)
         {
             if (id != tblIncome.IncomeId)
             {
@@ -73,37 +74,22 @@ namespace SpendMonitor.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(tblIncome);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TblIncomeExists(tblIncome.IncomeId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _incService.UpdateIncome(tblIncome);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IncomeCategory"] = new SelectList(_context.TblCategories, "CategoryId", "CategoryName", tblIncome.IncomeCategory);
+            ViewData["IncomeCategory"] = new SelectList(_incService.GetAllCategories(), "CategoryId", "CategoryName", tblIncome.IncomeCategory);
+            ViewData["IncomeAccount"] = new SelectList(_incService.GetAllAccounts(), "AccountId", "AccountBankName");
             return View(tblIncome);
         }
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var tblIncome = await _context.TblIncomes
-                .Include(t => t.IncomeCategoryNavigation)
-                .FirstOrDefaultAsync(m => m.IncomeId == id);
+            var tblIncome = _incService.FindIncomeToDelete(id);
+
             if (tblIncome == null)
             {
                 return NotFound();
@@ -114,16 +100,15 @@ namespace SpendMonitor.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var tblIncome = await _context.TblIncomes.FindAsync(id);
-            _context.TblIncomes.Remove(tblIncome);
-            await _context.SaveChangesAsync();
+            var tblIncome = _incService.FindIncomeById(id);
+            _incService.RemoveIncome(tblIncome);
             return RedirectToAction(nameof(Index));
         }
-        private bool TblIncomeExists(int id)
-        {
-            return _context.TblIncomes.Any(e => e.IncomeId == id);
-        }
+        //private bool TblIncomeExists(int id)
+        //{
+        //    return _context.TblIncomes.Any(e => e.IncomeId == id);
+        //}
     }
 }

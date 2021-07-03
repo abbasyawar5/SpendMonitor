@@ -22,6 +22,15 @@ namespace SpendMonitor.Models
         public virtual DbSet<TblExpenditure> TblExpenditures { get; set; }
         public virtual DbSet<TblIncome> TblIncomes { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=HP-SYED-YAWAR\\SQLEXPRESS;Database=SpendMonitor;Trusted_Connection=True;");
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
@@ -91,6 +100,11 @@ namespace SpendMonitor.Models
                 entity.Property(e => e.IncomeDate).HasColumnType("date");
 
                 entity.Property(e => e.IncomeSource).HasColumnType("text");
+
+                entity.HasOne(d => d.IncomeAccountNavigation)
+                    .WithMany(p => p.TblIncomes)
+                    .HasForeignKey(d => d.IncomeAccount)
+                    .HasConstraintName("FK_tblIncome_tblAccount");
 
                 entity.HasOne(d => d.IncomeCategoryNavigation)
                     .WithMany(p => p.TblIncomes)
