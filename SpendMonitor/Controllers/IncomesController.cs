@@ -14,9 +14,11 @@ namespace SpendMonitor.Controllers
     public class IncomesController : Controller
     {
         private readonly IIncomeService _incService;
-        public IncomesController(SpendMonitorContext context, IIncomeService incService)
+        private readonly IAccountService _accService;
+        public IncomesController(IIncomeService incService, IAccountService accService)
         {
             _incService = incService;
+            _accService = accService;
         }
 
         public IActionResult Index()
@@ -39,7 +41,9 @@ namespace SpendMonitor.Controllers
         {
             if (ModelState.IsValid)
             {
-                _incService.AddIncome(income);
+                if (_accService.AdjustIncAccountBalance(income, 1))
+                    _incService.AddIncome(income);
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IncomeCategory"] = new SelectList(_incService.GetAllCategories(), "CategoryId", "CategoryName", income.IncomeCategory);
@@ -102,8 +106,9 @@ namespace SpendMonitor.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var tblIncome = _incService.FindIncomeById(id);
-            _incService.RemoveIncome(tblIncome);
+            var income = _incService.FindIncomeById(id);
+            if (_accService.AdjustIncAccountBalance(income, -1))
+                _incService.RemoveIncome(income);
             return RedirectToAction(nameof(Index));
         }
         //private bool TblIncomeExists(int id)

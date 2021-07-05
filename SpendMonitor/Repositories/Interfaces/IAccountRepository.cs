@@ -9,5 +9,8 @@ namespace SpendMonitor.Repositories.Interfaces
     public interface IAccountRepository
     {
         List<TblAccount> GetAllAccounts();
+        bool AdjustExpAccountBalance(TblExpenditure expense, int adjust);
+
+        bool AdjustIncAccountBalance(TblIncome income, int adjust);
     }
 }

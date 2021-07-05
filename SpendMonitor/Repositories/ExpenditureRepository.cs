@@ -41,7 +41,6 @@ namespace SpendMonitor.Repositories
         public List<TblAccount> GetAllAccounts()
         {
             return _context.TblAccounts
-                     .Where(t => t.AccountIsDebit == false)
                      .ToList();
         }
         public bool AddExpense(TblExpenditure expense)

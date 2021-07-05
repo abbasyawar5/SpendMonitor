@@ -14,9 +14,11 @@ namespace SpendMonitor.Controllers
     public class ExpendituresController : Controller
     {
         private readonly IExpenditureService _expService;
-        public ExpendituresController(IExpenditureService expService, SpendMonitorContext context)
+        private readonly IAccountService _accService;
+        public ExpendituresController(IExpenditureService expService, IAccountService accService)
         {
             _expService = expService;
+            _accService = accService;
         }
         public IActionResult Index()
         {
@@ -36,7 +38,8 @@ namespace SpendMonitor.Controllers
         {
             if (ModelState.IsValid)
             {
-                _expService.AddExpense(expense);
+                if (_accService.AdjustExpAccountBalance(expense, -1))
+                    _expService.AddExpense(expense);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ExpCategory"] = new SelectList(_expService.GetAllCategories(), "CategoryId", "CategoryName", expense.ExpCategory);
@@ -95,8 +98,10 @@ namespace SpendMonitor.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var tblExpenditure = _expService.FindExopenseById(id);
-            _expService.RemoveExpense(tblExpenditure);
+            var expense = _expService.FindExopenseById(id);
+            if (_accService.AdjustExpAccountBalance(expense, 1))
+                _expService.RemoveExpense(expense);
+
             return RedirectToAction(nameof(Index));
         }
 
