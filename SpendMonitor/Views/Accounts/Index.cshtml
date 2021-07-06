@@ -1,0 +1,49 @@
+﻿@model IEnumerable<SpendMonitor.Models.TblAccount>
+
+@{
+    ViewData["Title"] = "My Accounts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>My Accounts</h1>
+
+<p>
+    <a asp-action="Create">Create New</a> | <a asp-action="Transfer">Transfer within accounts</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Account Name
+            </th>
+            <th>
+                Account Balance
+            </th>
+            <th>
+                Is Account Debit
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountBankName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountBalance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountIsDebit)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AccountId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

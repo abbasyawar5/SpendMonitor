@@ -20,24 +20,15 @@ namespace SpendMonitor.Repositories
         {
             return _context.TblAccounts.ToList();
         }
-        public bool AdjustAccountBalance(TblExpenditure expense, int adjust)
+
+        public bool AddAccount(TblAccount account)
         {
             try
             {
-                var account = _context.TblAccounts.AsNoTracking()
-                .Where(t => t.AccountId == expense.ExpAccount).FirstOrDefault();
-
-                switch (adjust)
-                {
-                    case < 0: account.AccountBalance -= expense.ExpAmount; break;
-                    case > 0: account.AccountBalance += expense.ExpAmount; break;
-                    default: break;
-                }
-                
-
-                _context.Update(account);
+                _context.Add(account);
                 _context.SaveChanges();
                 return true;
+
             }
             catch (Exception Ex)
             {
@@ -86,6 +77,32 @@ namespace SpendMonitor.Repositories
 
 
                 _context.Update(account);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                return false;
+            }
+        }
+
+        public bool TransferBetweenAccounts(int fromAccount, int toAccount, decimal amount)
+        {
+
+            try
+            {
+                var SourceAccount = _context.TblAccounts.AsNoTracking()
+                    .Where(t => t.AccountId == fromAccount).FirstOrDefault();
+
+                var DestAccount = _context.TblAccounts.AsNoTracking()
+                    .Where(t => t.AccountId == toAccount).FirstOrDefault();
+
+                SourceAccount.AccountBalance -= decimal.Parse(amount.ToString());
+                DestAccount.AccountBalance += decimal.Parse(amount.ToString());
+
+
+                _context.Update(SourceAccount);
+                _context.Update(DestAccount);
                 _context.SaveChanges();
                 return true;
             }

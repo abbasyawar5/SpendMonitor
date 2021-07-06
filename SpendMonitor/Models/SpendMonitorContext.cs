@@ -21,6 +21,7 @@ namespace SpendMonitor.Models
         public virtual DbSet<TblCategory> TblCategories { get; set; }
         public virtual DbSet<TblExpenditure> TblExpenditures { get; set; }
         public virtual DbSet<TblIncome> TblIncomes { get; set; }
+        public virtual DbSet<TblSubcategory> TblSubcategories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -111,6 +112,29 @@ namespace SpendMonitor.Models
                     .HasForeignKey(d => d.IncomeCategory)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_tblIncome_tblCategories");
+            });
+
+            modelBuilder.Entity<TblSubcategory>(entity =>
+            {
+                entity.HasKey(e => e.SubCategoryId);
+
+                entity.ToTable("tblSubcategories");
+
+                entity.Property(e => e.SubCategoryId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("SubCategoryID");
+
+                entity.Property(e => e.SubCategoryDescription).HasColumnType("text");
+
+                entity.Property(e => e.SubCategoryName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.SubCategoryParentCategoryNavigation)
+                    .WithMany(p => p.TblSubcategories)
+                    .HasForeignKey(d => d.SubCategoryParentCategory)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_tblSubcategories_tblCategories");
             });
 
             OnModelCreatingPartial(modelBuilder);

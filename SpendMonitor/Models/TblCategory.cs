@@ -11,6 +11,7 @@ namespace SpendMonitor.Models
         {
             TblExpenditures = new HashSet<TblExpenditure>();
             TblIncomes = new HashSet<TblIncome>();
+            TblSubcategories = new HashSet<TblSubcategory>();
         }
 
         public int CategoryId { get; set; }
@@ -20,5 +21,6 @@ namespace SpendMonitor.Models
 
         public virtual ICollection<TblExpenditure> TblExpenditures { get; set; }
         public virtual ICollection<TblIncome> TblIncomes { get; set; }
+        public virtual ICollection<TblSubcategory> TblSubcategories { get; set; }
     }
 }
