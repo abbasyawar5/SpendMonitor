@@ -20,6 +20,7 @@ namespace SpendMonitor.Repositories
             return _context.TblExpenditures
                 .Include(t => t.ExpCategoryNavigation)
                 .Where(t => t.ExpCategoryNavigation.CategoryIsExpenditure == true)
+                .Include(t => t.ExpSubcategoryNavigation)
                 .Include(t => t.ExpAccountNavigation)
                 .OrderByDescending(s => s.ExpDate)
                 .ToList();
@@ -37,6 +38,12 @@ namespace SpendMonitor.Repositories
             return _context.TblCategories
                 .Where(t => t.CategoryIsExpenditure == true)
                 .ToList();
+        }
+
+        public List<TblSubcategory> GetAllSubCategories()
+        {
+            return _context.TblSubcategories
+               .ToList();
         }
         public List<TblAccount> GetAllAccounts()
         {
@@ -93,6 +100,7 @@ namespace SpendMonitor.Repositories
         {
             var expense = _context.TblExpenditures
                     .Include(t => t.ExpCategoryNavigation)
+                     .Include(t => t.ExpSubcategoryNavigation)
                     .Include(t => t.ExpAccountNavigation)
                     .FirstOrDefault(m => m.Expid == id);
 

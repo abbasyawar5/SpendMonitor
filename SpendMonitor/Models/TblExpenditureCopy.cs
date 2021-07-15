@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SpendMonitor.Models
 {
-    public partial class TblExpenditure
+    public partial class TblExpenditureCopy
     {
         public int Expid { get; set; }
         public decimal ExpAmount { get; set; }
@@ -13,10 +13,6 @@ namespace SpendMonitor.Models
         public int ExpAccount { get; set; }
         public DateTime ExpDate { get; set; }
         public string ExpShop { get; set; }
-        public int ExpSubcategory { get; set; }
-
-        public virtual TblAccount ExpAccountNavigation { get; set; }
-        public virtual TblCategory ExpCategoryNavigation { get; set; }
-        public virtual TblSubcategory ExpSubcategoryNavigation { get; set; }
+        public int ExpSubCategory { get; set; }
     }
 }

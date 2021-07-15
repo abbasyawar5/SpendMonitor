@@ -55,7 +55,14 @@ namespace SpendMonitor.Services
                                        //where n.Year.Equals(yearSelected)
                                    select n.ExpDate.ToString("MMM")).Distinct().ToList();
             var totalExpenses = expenses.Sum(x => x.ExpAmount);
-            var AverageMonthlyExpense = totalExpenses / months.Count();
+            decimal AverageMonthlyExpense = 0;
+            
+            if (months.Count > 0)
+            {
+                AverageMonthlyExpense = totalExpenses / months.Count();
+                return AverageMonthlyExpense;
+            }
+            
             return AverageMonthlyExpense;
         }
 

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<SpendMonitor.Models.TblSubcategory>
+
+@{
+    ViewData["Title"] = "My Subcategories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Parent Category
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubCategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubCategoryDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubCategoryParentCategoryNavigation.CategoryName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SubCategoryId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.SubCategoryId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

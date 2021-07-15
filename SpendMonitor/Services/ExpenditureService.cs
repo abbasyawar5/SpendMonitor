@@ -17,6 +17,8 @@ namespace SpendMonitor.Services
         public List<TblExpenditure> GetAllExpensesForXMonth(int month) => _expRepo.GetAllExpensesForXMonth(month);
         public List<TblExpenditure> GetAllExpenditures() => _expRepo.GetAllExpenditures();
         public List<TblCategory> GetAllCategories() => _expRepo.GetAllCategories();
+
+        public List<TblSubcategory> GetAllSubCategories() => _expRepo.GetAllSubCategories();
         public List<TblAccount> GetAllAccounts() => _expRepo.GetAllAccounts();
         public bool AddExpense(TblExpenditure expense) => _expRepo.AddExpense(expense);
         public bool UpdateExpense(TblExpenditure expense) => _expRepo.UpdateExpense(expense);

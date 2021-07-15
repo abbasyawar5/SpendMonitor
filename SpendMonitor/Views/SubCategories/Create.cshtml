@@ -1,0 +1,41 @@
+﻿@model SpendMonitor.Models.TblSubcategory
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>TblSubcategory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label  class="control-label">Name</label>
+                <input asp-for="SubCategoryName" class="form-control" />
+                <span asp-validation-for="SubCategoryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <input asp-for="SubCategoryDescription" class="form-control" />
+                <span asp-validation-for="SubCategoryDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Parent Category</label>
+                <select asp-for="SubCategoryParentCategory" class ="form-control" asp-items="ViewBag.ParentCategories"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

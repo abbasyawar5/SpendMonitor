@@ -37,6 +37,10 @@ namespace SpendMonitor
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
 
+
+            services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+            services.AddScoped<ISubCategoryService, SubCategoryService>();
+
             services.AddScoped<IIncomeRepository, IncomeRepository>();
             services.AddScoped<IIncomeService, IncomeService>();
 

@@ -23,10 +23,13 @@
                 Category
             </th>
             <th>
+               Subcategory
+            </th>
+            <th>
                 Account
             </th>
             <th>
-                Shop Name
+                Shop Name / Reason
             </th>
             <th></th>
         </tr>
@@ -43,6 +46,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ExpCategoryNavigation.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpSubcategoryNavigation.SubCategoryName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ExpAccountNavigation.AccountBankName)

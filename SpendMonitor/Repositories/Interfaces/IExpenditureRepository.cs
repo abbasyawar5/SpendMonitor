@@ -11,6 +11,7 @@ namespace SpendMonitor.Repositories.Interfaces
         List<TblExpenditure> GetAllExpenditures();
         List<TblExpenditure> GetAllExpensesForXMonth(int month);
         List<TblCategory> GetAllCategories();
+        List<TblSubcategory> GetAllSubCategories();
         List<TblAccount> GetAllAccounts();
         bool AddExpense(TblExpenditure expense);
         bool GetExpense(TblExpenditure expense);

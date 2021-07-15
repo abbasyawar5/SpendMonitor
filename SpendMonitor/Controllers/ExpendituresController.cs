@@ -28,21 +28,28 @@ namespace SpendMonitor.Controllers
         public IActionResult Create()
         {
             ViewData["ExpCategory"] = new SelectList(_expService.GetAllCategories(), "CategoryId", "CategoryName");
+            ViewData["ExpSubCategory"] = new SelectList(_expService.GetAllSubCategories(), "SubCategoryId", "SubCategoryName");
             ViewData["ExpAccount"] = new SelectList(_expService.GetAllAccounts(), "AccountId", "AccountBankName");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("ExpAmount,ExpCategory,ExpAccount,ExpDate,ExpShop")] TblExpenditure expense)
+        public IActionResult Create([Bind("ExpAmount,ExpCategory,ExpSubcategory,ExpAccount,ExpDate,ExpShop")] TblExpenditure expense)
         {
             if (ModelState.IsValid)
             {
-                if (_accService.AdjustExpAccountBalance(expense, -1))
-                    _expService.AddExpense(expense);
+
+                if (!_expService.AddExpense(expense))
+                    ModelState.AddModelError("Error", "Expense not added");
+                else
+                    if (!_accService.AdjustExpAccountBalance(expense, -1))
+                    ModelState.AddModelError("Error", "Account not adjusted");
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ExpCategory"] = new SelectList(_expService.GetAllCategories(), "CategoryId", "CategoryName", expense.ExpCategory);
+            ViewData["ExpSubCategory"] = new SelectList(_expService.GetAllSubCategories(), "SubCategoryId", "SubCategoryName");
             ViewData["ExpAccount"] = new SelectList(_expService.GetAllAccounts(), "AccountId", "AccountBankName", expense.ExpAccount);
             return View(expense);
         }

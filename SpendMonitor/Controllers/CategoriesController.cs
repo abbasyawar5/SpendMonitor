@@ -14,9 +14,9 @@ namespace SpendMonitor.Controllers
     public class CategoriesController : Controller
     {
 
-            private readonly ICategoryService _cateService;
+        private readonly ICategoryService _cateService;
 
-        public CategoriesController(SpendMonitorContext context, ICategoryService cateService)
+        public CategoriesController(ICategoryService cateService)
         {
             _cateService = cateService;
         }
@@ -72,12 +72,12 @@ namespace SpendMonitor.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public  IActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             _cateService.RemoveCategory(id);
             return RedirectToAction(nameof(Index));
         }
 
-       
+
     }
 }

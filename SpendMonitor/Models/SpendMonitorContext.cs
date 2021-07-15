@@ -20,6 +20,7 @@ namespace SpendMonitor.Models
         public virtual DbSet<TblAccount> TblAccounts { get; set; }
         public virtual DbSet<TblCategory> TblCategories { get; set; }
         public virtual DbSet<TblExpenditure> TblExpenditures { get; set; }
+        public virtual DbSet<TblExpenditureCopy> TblExpenditureCopies { get; set; }
         public virtual DbSet<TblIncome> TblIncomes { get; set; }
         public virtual DbSet<TblSubcategory> TblSubcategories { get; set; }
 
@@ -75,7 +76,9 @@ namespace SpendMonitor.Models
 
                 entity.Property(e => e.ExpDate).HasColumnType("date");
 
-                entity.Property(e => e.ExpShop).HasColumnType("text");
+                entity.Property(e => e.ExpShop)
+                    .IsRequired()
+                    .HasColumnType("text");
 
                 entity.HasOne(d => d.ExpAccountNavigation)
                     .WithMany(p => p.TblExpenditures)
@@ -88,6 +91,25 @@ namespace SpendMonitor.Models
                     .HasForeignKey(d => d.ExpCategory)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_tblExpenditure_tblCategories");
+
+                entity.HasOne(d => d.ExpSubcategoryNavigation)
+                    .WithMany(p => p.TblExpenditures)
+                    .HasForeignKey(d => d.ExpSubcategory)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_tblExpenditure_tblSubcategories");
+            });
+
+            modelBuilder.Entity<TblExpenditureCopy>(entity =>
+            {
+                entity.HasKey(e => e.Expid);
+
+                entity.ToTable("tblExpenditureCOPY");
+
+                entity.Property(e => e.ExpAmount).HasColumnType("money");
+
+                entity.Property(e => e.ExpDate).HasColumnType("date");
+
+                entity.Property(e => e.ExpShop).HasColumnType("text");
             });
 
             modelBuilder.Entity<TblIncome>(entity =>
@@ -119,10 +141,6 @@ namespace SpendMonitor.Models
                 entity.HasKey(e => e.SubCategoryId);
 
                 entity.ToTable("tblSubcategories");
-
-                entity.Property(e => e.SubCategoryId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("SubCategoryID");
 
                 entity.Property(e => e.SubCategoryDescription).HasColumnType("text");
 
